@@ -1182,16 +1182,17 @@ def calculate_price(args: dict) -> dict:
 
     if missing_inputs:
         result = {
-            "error": "Недостаточно данных для расчёта. Отсутствуют или равны нулю:",
-            "missing": missing_inputs
-        }
+        "error": "Недостаточно данных для расчёта. Отсутствуют или равны нулю:",
+        "missing": missing_inputs
+    }
     else:
         result = {
             "glass_total":      glass_total,
             "furniture_total":  furniture_total,
-            "sku_details": [  # добавляем всё по каждой позиции
+            "sku_details": [
                 {
                     "sku": item["sku"],
+                    "name": item["name"],  # ← ДОБАВЛЕНО НАИМЕНОВАНИЕ
                     "qty": item["qty"],
                     "price_per_unit": item["price"],
                     "total_price": item["total"]
@@ -1203,9 +1204,8 @@ def calculate_price(args: dict) -> dict:
             "delivery_city":      delivery_city,
         }
 
-        # добавляем пакеты только если физлицо
-        if customer_type == "физлицо":
-            result["packages"] = packages
+    if customer_type == "физлицо":
+        result["packages"] = packages
 
     debug(f"Result сформирован: {result}")
     return result
