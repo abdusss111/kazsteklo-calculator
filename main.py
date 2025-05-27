@@ -57,6 +57,23 @@ def calculate(request: ShowerRequest):
 def options_calculate():
     return {"message": "CORS preflight handled"}
 
+from fastapi import HTTPException
+from starlette.status import HTTP_401_UNAUTHORIZED
+
+PASSWORD = "kazsteklo-legal"  # Replace with a secure password or load from env
+
+class PasswordCheckRequest(BaseModel):
+    password: str
+
+@app.post("/auth/password-check")
+def password_check(data: PasswordCheckRequest):
+    if data.password == PASSWORD:
+        return {"authorized": True}
+    raise HTTPException(status_code=HTTP_401_UNAUTHORIZED, detail="Invalid password")
+
+
+
 if __name__ == "__main__":
     import uvicorn
     uvicorn.run(app, host="0.0.0.0", port=8000)
+
