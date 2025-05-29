@@ -1,4 +1,4 @@
-from google_client import get_spreadsheet
+from data.google_client import get_spreadsheet
 spreadsheet = get_spreadsheet()
 
 price_catalog_legal = {}

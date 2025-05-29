@@ -23,5 +23,7 @@ class ShowerRequest(BaseModel):
     city: str = "Алматы"
 
 
-class PasswordCheckRequest(BaseModel):
+class AuthRequest(BaseModel):
+    username: str
     password: str
+

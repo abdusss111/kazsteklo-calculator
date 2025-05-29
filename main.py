@@ -1,13 +1,14 @@
 # main.py
-from fastapi import FastAPI, Request
+from fastapi import FastAPI, Request, HTTPException, Depends
 from fastapi.middleware.cors import CORSMiddleware
 from logic import calculate_price
-from models import ShowerRequest, PasswordCheckRequest
-from fastapi import HTTPException
+from models import ShowerRequest, AuthRequest
 from starlette.status import HTTP_401_UNAUTHORIZED
 from apscheduler.schedulers.background import BackgroundScheduler
 from data.glass_price import load_glass_prices
 from data.furniture_price import load_furniture_prices
+from auth import validate_credentials, create_token
+import logging
 app = FastAPI(title="Shower Calculator API", version="1.0.0")
 
 app.add_middleware(
@@ -51,7 +52,12 @@ def calculate(request: ShowerRequest):
 def options_calculate():
     return {"message": "CORS preflight handled"}
 
-
+@app.post("/login")
+def login(data: AuthRequest):
+    if not validate_credentials(data.username, data.password):
+        raise HTTPException(status_code=401, detail="Invalid credentials")
+    token = create_token(data.username)
+    return {"access_token": token, "token_type": "bearer"}
 
 if __name__ == "__main__":
     import uvicorn
