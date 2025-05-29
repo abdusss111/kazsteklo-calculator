@@ -43,6 +43,12 @@ for row in rows:
     except Exception as e:
         print(f"❌ Ошибка в строке: {row} — {e}")
 
-# ✅ Проверка
-from pprint import pprint
-pprint(price_catalog_legal)
+
+def get_furniture_price_legal():
+    """
+    Получает цены на фурнитуру из Google Sheets.
+    
+    Returns:
+        dict: Словарь с артикулом фурнитуры и их ценами.
+    """
+    return price_catalog_legal
