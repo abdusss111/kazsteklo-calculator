@@ -1,5 +1,5 @@
-from glass_price import get_glass_price_legal, get_glass_price_physical, get_glass_price_economy
-from furniture_price import get_furniture_price_legal, get_furniture_price_physical
+from data.glass_price import get_glass_price_legal, get_glass_price_physical, get_glass_price_economy
+from data.furniture_price import get_furniture_price_legal, get_furniture_price_physical
 def debug(msg):
     print(msg)
 
