@@ -1,7 +1,20 @@
 import gspread
+import base64
+import os
 from oauth2client.service_account import ServiceAccountCredentials
+from dotenv import load_dotenv
+# Загрузка переменных окружения из .env файла
+load_dotenv()
 
-# Авторизация
+# Раскодируем base64-переменную в файл credentials.json
+creds_b64 = os.environ.get("GOOGLE_CREDENTIALS_B64")
+if not creds_b64:
+    raise RuntimeError("Environment variable GOOGLE_CREDENTIALS_B64 not set")
+
+with open("credentials.json", "wb") as f:
+    f.write(base64.b64decode(creds_b64))
+
+# Авторизация через gspread
 scope = ["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/auth/drive"]
 creds = ServiceAccountCredentials.from_json_keyfile_name("credentials.json", scope)
 client = gspread.authorize(creds)
