@@ -3,3 +3,5 @@ pydantic
 uvicorn
 gspread
 oauth2client
+python-dotenv
+base64
