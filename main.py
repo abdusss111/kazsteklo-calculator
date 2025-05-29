@@ -23,11 +23,11 @@ scheduler = BackgroundScheduler()
 @app.on_event("startup")
 def on_startup():
     print("🔄 Loading initial data...")
-    load_glass_data()
-    load_furniture_data()
+    load_glass_prices()
+    load_furniture_prices()
 
-    scheduler.add_job(load_glass_data, "interval", hours=24)
-    scheduler.add_job(load_furniture_data, "interval", hours=24)
+    scheduler.add_job(load_glass_prices, "interval", hours=24)
+    scheduler.add_job(load_furniture_prices, "interval", hours=24)
     scheduler.start()
 
 
