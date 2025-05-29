@@ -9,12 +9,17 @@ def parse_data(rows, price_catalog: dict):
     price_catalog.clear()
     for row in rows:
         name = row[1].strip() if len(row) > 1 else None
+        price_str = row[2] if len(row) > 2 else ''
+        price_str = price_str.replace('\xa0', '').replace(',', '').strip().lower()
+
         try:
-            price = int(row[2].strip()) if len(row) > 2 and row[2].strip() else 0
-        except (IndexError, ValueError):
+            price = 0 if price_str in ['', '-', '–', 'x', 'х'] else int(float(price_str))
+        except ValueError:
             price = 0
+
         if name:
             price_catalog[name] = price
+
 
 def load_glass_prices():
     rows_legal = spreadsheet.worksheet("стекла-юр").get_all_values()
