@@ -1,10 +1,10 @@
-import os
+import os, jwt
 from typing import Optional
 from data.google_client import get_spreadsheet
-import jwt
 from datetime import datetime, timedelta
 from dotenv import load_dotenv
-
+from fastapi import Depends, HTTPException, status
+from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 load_dotenv()
 
 JWT_SECRET = os.getenv("JWT_SECRET")  # put this in your .env!
@@ -44,3 +44,18 @@ def decode_token(token: str) -> Optional[str]:
         return payload["sub"]
     except jwt.PyJWTError:
         return None
+
+
+security = HTTPBearer()
+JWT_SECRET = os.getenv("JWT_SECRET")
+
+def get_current_user(credentials: HTTPAuthorizationCredentials = Depends(security)) -> str:
+    token = credentials.credentials
+    try:
+        payload = jwt.decode(token, JWT_SECRET, algorithms=["HS256"])
+        return payload["sub"]
+    except jwt.PyJWTError:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Invalid or expired token",
+        )

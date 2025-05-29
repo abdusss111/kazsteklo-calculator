@@ -7,7 +7,7 @@ from starlette.status import HTTP_401_UNAUTHORIZED
 from apscheduler.schedulers.background import BackgroundScheduler
 from data.glass_price import load_glass_prices
 from data.furniture_price import load_furniture_prices
-from auth import validate_credentials, create_token
+from auth import validate_credentials, create_token, get_current_user
 import logging
 app = FastAPI(title="Shower Calculator API", version="1.0.0")
 
@@ -40,13 +40,16 @@ def read_root():
 def health_check():
     return {"status": "healthy", "message": "API is working properly"}
 
+from auth import get_current_user
+
 @app.post("/calculate")
-def calculate(request: ShowerRequest):
+def calculate(request: ShowerRequest, user: str = Depends(get_current_user)):
     try:
         result = calculate_price(request.dict())
         return result
     except Exception as e:
         return {"error": f"Calculation error: {str(e)}"}
+
 
 @app.options("/calculate")
 def options_calculate():
