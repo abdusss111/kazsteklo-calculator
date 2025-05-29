@@ -51,11 +51,6 @@ def calculate(request: ShowerRequest):
 def options_calculate():
     return {"message": "CORS preflight handled"}
 
-@app.post("/auth/password-check")
-def password_check(data: PasswordCheckRequest):
-    if data.password == PASSWORD:
-        return {"authorized": True}
-    raise HTTPException(status_code=HTTP_401_UNAUTHORIZED, detail="Invalid password")
 
 
 if __name__ == "__main__":

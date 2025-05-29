@@ -1,22 +1,5 @@
-import gspread
-import base64
-import os
-from oauth2client.service_account import ServiceAccountCredentials
-from dotenv import load_dotenv
-
-load_dotenv()
-
-creds_b64 = os.environ.get("GOOGLE_CREDENTIALS_B64")
-if not creds_b64:
-    raise RuntimeError("Environment variable GOOGLE_CREDENTIALS_B64 not set")
-
-with open("credentials.json", "wb") as f:
-    f.write(base64.b64decode(creds_b64))
-
-scope = ["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/auth/drive"]
-creds = ServiceAccountCredentials.from_json_keyfile_name("credentials.json", scope)
-client = gspread.authorize(creds)
-spreadsheet = client.open_by_key("1-6B76PRvp6-KKl_cqj9wTt4jWO73GZ8mac_hXJdRC4c")
+from google_client import get_spreadsheet
+spreadsheet = get_spreadsheet()
 
 glass_prices_legal = {}
 glass_price_physical = {}
