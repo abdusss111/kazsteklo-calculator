@@ -20,7 +20,7 @@ creds = ServiceAccountCredentials.from_json_keyfile_name("credentials.json", sco
 client = gspread.authorize(creds)
 
 # Открываем нужный лист
-sheet = client.open_by_key("1-6B76PRvp6-KKl_cqj9wTt4jWO73GZ8mac_hXJdRC4c").worksheet("фурнитура")  # замените на ваш лист
+sheet = client.open_by_key("1-6B76PRvp6-KKl_cqj9wTt4jWO73GZ8mac_hXJdRC4c").worksheet("фурнитура-юр")  # замените на ваш лист
 
 rows = sheet.get_all_values()[1:]  
 

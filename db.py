@@ -21,7 +21,7 @@ client = gspread.authorize(creds)
 
 # Доступ к таблице
 spreadsheet = client.open_by_key("1-6B76PRvp6-KKl_cqj9wTt4jWO73GZ8mac_hXJdRC4c")
-sheet = spreadsheet.worksheet("стекла")
+sheet = spreadsheet.worksheet("стекла-юр")
 # Получение всех строк
 rows = sheet.get_all_values()
 
