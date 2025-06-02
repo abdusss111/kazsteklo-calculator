@@ -1,5 +1,5 @@
 # main.py
-from fastapi import FastAPI, Request, HTTPException, Depends
+from fastapi import FastAPI, Request, HTTPException, Depends, Body
 from fastapi.middleware.cors import CORSMiddleware
 from logic import calculate_price
 from models import ShowerRequest, AuthRequest
@@ -50,6 +50,17 @@ def calculate(request: ShowerRequest, user: str = Depends(get_current_user)):
     except Exception as e:
         return {"error": f"Calculation error: {str(e)}"}
 
+@app.post("/calculate/physical")
+def calculate_physical(request: ShowerRequest = Body(...)):
+    try:
+        # Override customer_type to ensure it is always "физлицо"
+        request_dict = request.dict()
+        request_dict["customer_type"] = "физлицо"
+
+        result = calculate_price(request_dict)
+        return result
+    except Exception as e:
+        return {"error": f"Calculation error: {str(e)}"}
 
 @app.options("/calculate")
 def options_calculate():
