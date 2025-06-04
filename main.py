@@ -69,14 +69,14 @@ def login(data: AuthRequest):
     if not validate_credentials(data.username, data.password):
         raise HTTPException(status_code=401, detail="Invalid credentials")
     token = create_token(data.username)
-    return {"access_token": token, "token_type": "bearer"}
+    return {"access_token": token, "token_type": "bearer", "user": "legal"}
 
 @app.post("/login/manager")
 def login_manager(data: AuthRequest):
     if not validate_manager_credentials(data.username, data.password):
         raise HTTPException(status_code=401, detail="Invalid credentials")
     token = create_token(data.username)
-    return {"access_token": token, "token_type": "bearer"}
+    return {"access_token": token, "token_type": "bearer", "user": "manager"}
 
 
 if __name__ == "__main__":
