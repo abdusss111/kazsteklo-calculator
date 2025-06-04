@@ -1,19 +1,19 @@
 # main.py
 from fastapi import FastAPI, Request, HTTPException, Depends, Body
 from fastapi.middleware.cors import CORSMiddleware
-from logic import calculate_price
-from models import ShowerRequest, AuthRequest
+from app.logic import calculate_price
+from app.models import ShowerRequest, AuthRequest
 from starlette.status import HTTP_401_UNAUTHORIZED
 from apscheduler.schedulers.background import BackgroundScheduler
 from data.glass_price import load_glass_prices
 from data.furniture_price import load_furniture_prices
-from auth import validate_credentials, create_token, get_current_user
+from app.auth import validate_credentials, create_token, get_current_user, validate_manager_credentials
 import logging
 app = FastAPI(title="Shower Calculator API", version="1.0.0")
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # In production, replace with specific domains
+    allow_origins=["*"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -39,8 +39,6 @@ def read_root():
 @app.get("/health")
 def health_check():
     return {"status": "healthy", "message": "API is working properly"}
-
-from auth import get_current_user
 
 @app.post("/calculate")
 def calculate(request: ShowerRequest, user: str = Depends(get_current_user)):
@@ -72,6 +70,14 @@ def login(data: AuthRequest):
         raise HTTPException(status_code=401, detail="Invalid credentials")
     token = create_token(data.username)
     return {"access_token": token, "token_type": "bearer"}
+
+@app.post("/login/manager")
+def login_manager(data: AuthRequest):
+    if not validate_manager_credentials(data.username, data.password):
+        raise HTTPException(status_code=401, detail="Invalid credentials")
+    token = create_token(data.username)
+    return {"access_token": token, "token_type": "bearer"}
+
 
 if __name__ == "__main__":
     import uvicorn

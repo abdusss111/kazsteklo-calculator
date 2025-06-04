@@ -24,11 +24,26 @@ def get_users_from_sheet() -> list[dict]:
 
     return users
 
+def get_managers() -> list[dict]:
+    sheet = get_spreadsheet().worksheet("менеджеры")
+    rows = sheet.get_all_values()[1:]  # Skip header row
+    managers = []
+
+    for row in rows:
+        if len(row) >= 3:
+            username = row[1].strip()
+            password = row[2].strip()
+            managers.append({"username": username, "password": password})
+
+    return managers
 
 def validate_credentials(username: str, password: str) -> bool:
     users = get_users_from_sheet()
     return any(u["username"] == username and u["password"] == password for u in users)
 
+def validate_manager_credentials(username: str, password: str) -> bool:
+    managers = get_managers()
+    return any(m["username"] == username and m["password"] == password for m in managers)
 
 def create_token(username: str) -> str:
     payload = {
