@@ -36,6 +36,9 @@ def load_furniture_prices():
 
 load_furniture_prices()
 
+furniture_list = list(price_catalog_physical.keys())
+
+
 def get_furniture_price_legal():
     return price_catalog_legal
 

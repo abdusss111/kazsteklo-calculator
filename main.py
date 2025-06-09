@@ -78,6 +78,13 @@ def login_manager(data: AuthRequest):
     token = create_token(data.username)
     return {"access_token": token, "token_type": "bearer", "user": "manager"}
 
+@app.get("/furniture-list")
+def get_furniture_list():
+    try:
+        from data.furniture_price import get_furniture_price_legal
+        return get_furniture_price_legal()
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error loading furniture list: {str(e)}")
 
 if __name__ == "__main__":
     import uvicorn
