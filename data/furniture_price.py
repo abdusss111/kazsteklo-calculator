@@ -26,6 +26,7 @@ def parse_data(rows, price_catalog: dict):
                 }
         except Exception as e:
             print(f"❌ Ошибка в строке: {row} — {e}")
+            
 
 def load_furniture_prices():
     rows_legal = spreadsheet.worksheet("фурнитура-юр").get_all_values()[1:]
