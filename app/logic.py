@@ -767,14 +767,14 @@ def calculate_price(args: dict) -> dict:
                 "выгода_по_скидке": int((pickup_econom + 70000) * 0.15)
             },
             "Стандарт": {
-                "стоимость_пакета_без_скидки": pickup_without_pack + 175000,
-                "итого_со_скидкой": int((pickup_without_pack + 175000) * 0.75),
-                "выгода_по_скидке": int((pickup_without_pack + 175000) * 0.25)
+                "стоимость_пакета_без_скидки": pickup_without_pack + 130000,
+                "итого_со_скидкой": int((pickup_without_pack + 130000) * 0.75),
+                "выгода_по_скидке": int((pickup_without_pack + 130000) * 0.25)
             },
             "Премиум": {
-                "стоимость_пакета_без_скидки": pickup_without_pack + 265000,
-                "итого_со_скидкой": int((pickup_without_pack + 265000) * 0.75),
-                "выгода_по_скидке": int((pickup_without_pack + 265000) * 0.25)
+                "стоимость_пакета_без_скидки": pickup_without_pack + 200000,
+                "итого_со_скидкой": int((pickup_without_pack + 200000) * 0.75),
+                "выгода_по_скидке": int((pickup_without_pack + 200000) * 0.25)
             }
         }
 
