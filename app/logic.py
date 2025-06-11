@@ -542,55 +542,97 @@ def calculate_price(args: dict) -> dict:
         }
 
     elif shower_type == "Шторка":
-        # === АРТИКУЛЫ ===
-        sku_map = {
-            "AAAAAAAA9" : (
-                f"P10088{suffix}" if curtain_type == "Распашное" else
-                f"P10049{suffix}" if curtain_type == "Гормошка" else "-"
-            ),
-            "AAAAAAAA10": f"P10050{suffix}" if curtain_type == "Гормошка" else "-",
-            "AAAAAAAA11": f"HS-6463{suffix}" if mount_type == "На П-профиле" else "-",
-            "AAAAAAAA12": (
-                f"Q10068{suffix}" if mount_type == "На коннекторах" and connector_type == "Коннектор Г-образный" else "-"
-            ),
-            "AAAAAAAA13": (
-                f"Q10066{suffix}" if mount_type == "На коннекторах" and connector_type == "Коннектор П-образный" else "-"
-            ),
-            "AAAAAAAA14": f"U10072{suffix}",
-            "AAAAAAAA15": (
-                f"J10255-19{suffix}" if handle_type == "Ручка полотенцесушитель" and frame_type == "Круглая труба" else
-                f"J10265{suffix}"     if handle_type == "Ручка полотенцесушитель" and frame_type == "Квадратная труба" else
-                f"J10275{suffix}"     if handle_type == "Скоба" and frame_type == "Круглая труба" else
-                f"J10270{suffix}"     if handle_type == "Скоба" and frame_type == "Квадратная труба" else
-                f"J10333{suffix}"     if handle_type == "Кноб" and frame_type == "Круглая труба" else
-                f"J10347{suffix}"     if handle_type == "Кноб" and frame_type == "Квадратная труба" else "-"
-            ),
-            "AAAAAAAA16": (
-                f"002{suffix}"     if rigid_element_type == "Труба круглая" else
-                f"S10001{suffix}"  if rigid_element_type == "Штанга круглая" else
-                f"S10012{suffix}"  if rigid_element_type == "Штанга квадратная" else "-"
-            ),
-            "AAAAAAAA17": f"L10058{suffix}" if rigid_element_type == "Труба круглая" else "-",
-            "AAAAAAAA18": f"L10078{suffix}" if rigid_element_type == "Труба круглая" else "-"
-        }
+    # === АРТИКУЛЫ ===
+    sku_map = {
+        "AAAAAAAA9" : (
+            f"P10088{suffix}" if curtain_type == "Распашное" else
+            f"P10049{suffix}" if curtain_type == "Гормошка" else "-"
+        ),
+        "AAAAAAAA10": f"P10050{suffix}" if curtain_type == "Гормошка" else "-",
+        "AAAAAAAA11": f"HS-6463{suffix}" if mount_type == "На П-профиле" else "-",
+        "AAAAAAAA12": (
+            f"Q10068{suffix}" if mount_type == "На коннекторах" and connector_type == "Коннектор Г-образный" else "-"
+        ),
+        "AAAAAAAA13": (
+            f"Q10066{suffix}" if mount_type == "На коннекторах" and connector_type == "Коннектор П-образный" else "-"
+        ),
+        "AAAAAAAA14": f"U10072{suffix}",
+        "AAAAAAAA15": (
+            f"J10255-19{suffix}" if handle_type == "Ручка полотенцесушитель" and frame_type == "Круглая труба" else
+            f"J10265{suffix}"     if handle_type == "Ручка полотенцесушитель" and frame_type == "Квадратная труба" else
+            f"J10275{suffix}"     if handle_type == "Скоба" and frame_type == "Круглая труба" else
+            f"J10270{suffix}"     if handle_type == "Скоба" and frame_type == "Квадратная труба" else
+            f"J10333{suffix}"     if handle_type == "Кноб" and frame_type == "Круглая труба" else
+            f"J10347{suffix}"     if handle_type == "Кноб" and frame_type == "Квадратная труба" else "-"
+        ),
+        "AAAAAAAA16": (
+            f"002{suffix}"     if rigid_element_type == "Труба круглая" else
+            f"S10001{suffix}"  if rigid_element_type == "Штанга круглая" else
+            f"S10012{suffix}"  if rigid_element_type == "Штанга квадратная" else "-"
+        ),
+        "AAAAAAAA17": f"L10058{suffix}" if rigid_element_type == "Труба круглая" else "-",
+        "AAAAAAAA18": f"L10078{suffix}" if rigid_element_type == "Труба круглая" else "-"
+    }
 
-        # === КОЛИЧЕСТВА ===
-        sku_qty = {
-            "AAAAAAAA9" : 2,
-            "AAAAAAAA10": 2 if curtain_type == "Гормошка" else 0,
-            "AAAAAAAA11": rounded_f11 if mount_type == "На П-профиле" else 0,
-            "AAAAAAAA12": 2 if sku_map["AAAAAAAA12"] != "-" else 0,
-            "AAAAAAAA13": 2 if sku_map["AAAAAAAA13"] != "-" else 0,
-            "AAAAAAAA14": 2,
-            "AAAAAAAA15": 1 if sku_map["AAAAAAAA15"] != "-" else 0,
-            "AAAAAAAA16": (
-                1 if rigid_element_type == "Штанга квадратная" and length > 0.9 else
-                1 if rigid_element_type == "Штанга круглая" and length > 0.6 else
-                1 if rigid_element_type in ["Штанга квадратная", "Штанга круглая", "Труба круглая"] else 0
-            ),
-            "AAAAAAAA17": 1 if sku_map["AAAAAAAA17"] != "-" else 0,
-            "AAAAAAAA18": 1 if sku_map["AAAAAAAA18"] != "-" else 0
+    # === УЛУЧШЕННЫЕ КОЛИЧЕСТВА С ПРАВИЛЬНОЙ ЛОГИКОЙ ШТАНГА ===
+    
+    # Вспомогательные расчеты для штанги
+    def calculate_shtanga_qty(element_type, length):
+        """Рассчитывает количество штанги в зависимости от типа и длины"""
+        if element_type == "Штанга квадратная":
+            # Квадратная штанга: 1 шт при длине > 0.9м, иначе 0
+            return 1 if length > 0.9 else 0
+        elif element_type == "Штанга круглая":
+            # Круглая штанга: 1 шт при длине > 0.6м, иначе 0
+            return 1 if length > 0.6 else 0
+        elif element_type == "Труба круглая":
+            # Круглая труба: всегда 1 шт
+            return 1
+        else:
+            return 0
+
+    shtanga_qty = calculate_shtanga_qty(rigid_element_type, length)
+    
+    # Дополнительная логика: если штанга нужна, то возможно нужны дополнительные крепления
+    additional_fittings_needed = shtanga_qty > 0 and length > 1.5
+    
+    sku_qty = {
+        "AAAAAAAA9" : 2,
+        "AAAAAAAA10": 2 if curtain_type == "Гормошка" else 0,
+        "AAAAAAAA11": rounded_f11 if mount_type == "На П-профиле" else 0,
+        "AAAAAAAA12": 2 if sku_map["AAAAAAAA12"] != "-" else 0,
+        "AAAAAAAA13": 2 if sku_map["AAAAAAAA13"] != "-" else 0,
+        "AAAAAAAA14": 2,
+        "AAAAAAAA15": 1 if sku_map["AAAAAAAA15"] != "-" else 0,
+        "AAAAAAAA16": shtanga_qty,  # Используем улучшенный расчет
+        "AAAAAAAA17": 1 if sku_map["AAAAAAAA17"] != "-" else 0,
+        "AAAAAAAA18": 1 if sku_map["AAAAAAAA18"] != "-" else 0,
+        # Дополнительные позиции для штанги (если нужны)
+        "AAAAAAAA19": (
+            2 if rigid_element_type in ["Штанга круглая", "Штанга квадратная"] and additional_fittings_needed else 0
+        )
+    }
+    
+    # === ДОПОЛНИТЕЛЬНЫЕ АРТИКУЛЫ ДЛЯ ШТАНГИ (если требуются) ===
+    if shtanga_qty > 0:
+        # Добавляем артикулы креплений для штанги
+        additional_sku_map = {
+            "AAAAAAAA19": (
+                f"L10060{suffix}" if rigid_element_type == "Штанга круглая" and additional_fittings_needed else
+                f"L10061{suffix}" if rigid_element_type == "Штанга квадратная" and additional_fittings_needed else "-"
+            )
         }
+        sku_map.update(additional_sku_map)
+    
+    # === DEBUG: вывод расчетов штанги ===
+    if shtanga_qty > 0:
+        debug(f"[ШТАНГА] Тип: {rigid_element_type}")
+        debug(f"[ШТАНГА] Длина: {length}")
+        debug(f"[ШТАНГА] Количество штанги: {shtanga_qty}")
+        debug(f"[ШТАНГА] Доп. крепления нужны: {additional_fittings_needed}")
+        debug(f"[ШТАНГА] Артикул штанги: {sku_map.get('AAAAAAAA16', '-')}")
+        if additional_fittings_needed:
+            debug(f"[ШТАНГА] Артикул доп. креплений: {sku_map.get('AAAAAAAA19', '-')}")
 
     elif shower_type == "Дверь":
         seal_type_effective = (
