@@ -897,16 +897,13 @@ def calculate_price(args: dict) -> dict:
         result = {
             "glass_total":      glass_total,
             "glass_total_economy": glass_total_economy,
-            "glass_items": [
-                {
+            "glass_items": {
                     "sku": item["sku"],
                     "name": item["name"],  # ← ДОБАВЛЕНО НАИМЕНОВАНИЕ
                     "qty": item["qty"],
                     "price_per_unit": item["price"],
                     "total_price": item["total"]
-                }
-                for item in glass_items if item["sku"] != "-"
-            ],
+                },
             "furniture_items": furniture_items,
             "furniture_total":  furniture_total,
             "sku_details": [
