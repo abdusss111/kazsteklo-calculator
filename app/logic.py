@@ -906,16 +906,13 @@ def calculate_price(args: dict) -> dict:
                 },
             "furniture_items": furniture_items,
             "furniture_total":  furniture_total,
-            "sku_details": [
-                {
+            "sku_details": {
                     "sku": item["sku"],
                     "name": item["name"],  # ← ДОБАВЛЕНО НАИМЕНОВАНИЕ
                     "qty": item["qty"],
                     "price_per_unit": item["price"],
                     "total_price": item["total"]
                 }
-                for item in furniture_items if item["sku"] != "-"
-            ],
             "binding_total":    binding_total,
             "pickup_without_pack": pickup_without_pack,
             "delivery_city":      delivery_city,
