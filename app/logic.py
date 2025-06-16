@@ -219,7 +219,7 @@ def calculate_price(args: dict) -> dict:
             ),
             "AA10": rounded_f10 if mount_type == "На П-профиле" else 0,
             "AA11": (
-                6 if mount_type == "На коннекторах" and door_count == "Одна от стены"
+                6 if mount_type == "На коннекторах" and door_count == "Одна от стекла 180"
                 else 0 if mount_type == "На П-профиле"
                 else 8
             ),
