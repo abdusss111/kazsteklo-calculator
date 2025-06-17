@@ -5,7 +5,6 @@ from app.logic import calculate_price
 from app.models import ShowerRequest, AuthRequest
 from starlette.status import HTTP_401_UNAUTHORIZED
 from apscheduler.schedulers.background import BackgroundScheduler
-from app.logic import calculate_delivery_extra
 from data.glass_price import load_glass_prices
 from data.furniture_price import load_furniture_prices
 from app.auth import validate_credentials, create_token, get_current_user, validate_manager_credentials
@@ -44,9 +43,7 @@ def health_check():
 @app.post("/calculate")
 def calculate(request: ShowerRequest, user: str = Depends(get_current_user)):
     try:
-        result = calculate_price(request.dict())        
-        extra = calculate_delivery_extra(request.delivery_zone)
-        result["delivery_city"] = result.get("delivery_city", 0) + extra
+        result = calculate_price(request.dict())
         return result
     except Exception as e:
         return {"error": f"Calculation error: {str(e)}"}
