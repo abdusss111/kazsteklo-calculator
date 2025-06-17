@@ -21,6 +21,7 @@ class ShowerRequest(BaseModel):
     rigid_element_type: str = "Труба круглая"
     curtain_type: str = "Распашное"
     city: str = "Алматы"
+    delivery_zone: str = "По г. Алматы"
 
 
 class AuthRequest(BaseModel):

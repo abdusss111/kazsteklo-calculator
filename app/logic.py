@@ -3,6 +3,22 @@ from data.furniture_price import get_furniture_price_legal, get_furniture_price_
 def debug(msg):
     print(msg)
 
+def calculate_delivery_extra(delivery_zone: str) -> int:
+    delivery_map = {
+        "По г. Алматы": 10000,
+        "До 5 км от г. Алматы": 20000,
+        "С 5 до 10 км от г. Алматы": 25000,
+        "С 10 до 20 км от г. Алматы": 30000,
+        "Свыше 20 км от г. Алматы": 35000,
+        "По г. Астана": 10000,
+        "До 5 км от г. Астана": 20000,
+        "С 5 до 10 км от г. Астана": 25000,
+        "С 10 до 20 км от г. Астана": 30000,
+        "Свыше 20 км от г. Астана": 35000,
+    }
+    return delivery_map.get(delivery_zone, 0)
+
+
 
 def calculate_price(args: dict) -> dict:
     # === ВХОДНЫЕ ПАРАМЕТРЫ ===
@@ -812,10 +828,20 @@ def calculate_price(args: dict) -> dict:
 
 
     # === ДОСТАВКА ===
+    # Цена за погонный метр
+    binding_price_per_meter = binding_prices.get(frame_type, {}).get(hardware_color, 0)
+
+    # Кол-во погонных метров с округлением вверх
+    binding_meter_qty = int(length) + (1 if length % 1 > 0 else 0)
+
+    # Итоговая стоимость
+    binding_total = binding_meter_qty * binding_price_per_meter
+
+    # === ДОСТАВКА ===
     area = length * height
 
     pickup_without_pack = glass_total + furniture_total + binding_total
-    pickup_with_pack = pickup_without_pack + (area * 2000) # упаковка + сбор
+    pickup_with_pack = pickup_without_pack + (area * 2000)  # упаковка + сбор
 
     if city == "Алматы":
         delivery_city = pickup_with_pack
@@ -833,6 +859,10 @@ def calculate_price(args: dict) -> dict:
         delivery_city = pickup_with_pack + (10000 if area < 2 else area * 4000)
     else:
         delivery_city = pickup_with_pack
+
+    # Добавляем доплату за зону доставки
+    delivery_city += calculate_delivery_extra(request.get("delivery_zone", ""))
+
         
 
     # === ПАКЕТЫ С УЧЁТОМ СКИДКИ НА ОБЩУЮ СУММУ ===
