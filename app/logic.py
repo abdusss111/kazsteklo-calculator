@@ -172,15 +172,25 @@ def calculate_price(args: dict) -> dict:
 
         hinge_base_code = "P10090" if door_count == "Одна от стекла 90" else "P10088"
         rounded_qty = roundup_excel((length + height * 2) / 2.5)
+        
+        connector_type = connector_type.strip()
+        mount_type = mount_type.strip()
 
+        if mount_type == "На коннекторах":
+            if "Г-образный" in connector_type:
+                sku_aa11 = f"Q10068{suffix}"
+            elif "П-образный" in connector_type:
+                sku_aa11 = f"Q10066{suffix}"
+            else:
+                sku_aa11 = "-"
+        else:
+            sku_aa11 = "-"
+
+        # Формирование словаря
         sku_map = {
             "AA9": f"{hinge_base_code}{suffix}",
             "AA10": f"HS-6463{suffix}" if mount_type == "На П-профиле" else "-",
-            "AA11": (
-                f"Q10068{suffix}" if mount_type == "На коннекторах" and connector_type == "Коннектор Г-образный"
-                else f"Q10066{suffix}" if mount_type == "На коннекторах" and connector_type == "Коннектор П-образный"
-                else "-"
-            ),
+            "AA11": sku_aa11,
             "AA12": (
                 f"L10073{suffix}" if frame_type == "Круглая труба" and binding_type == "По периметру"
                 else f"L10084{suffix}" if frame_type == "Квадратная труба" and binding_type == "По периметру"
