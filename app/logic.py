@@ -878,19 +878,19 @@ def calculate_price(args: dict) -> dict:
         pickup_econom = pickup_without_pack - glass_total + glass_total_economy
         return {
             "Эконом": {
-                "стоимость_пакета_без_скидки": pickup_econom + 70000,
-                "итого_с_монтажом_и_скидкой": int((pickup_econom + 70000) * 0.85),
-                "выгода_по_скидке": int((pickup_econom + 70000) * 0.15)
+                "стоимость_пакета_без_скидки": pickup_econom + 80000,
+                "итого_с_монтажом_и_скидкой": int((pickup_econom + 80000) * 0.85),
+                "выгода_по_скидке": int((pickup_econom + 80000) * 0.15)
             },
             "Стандарт": {
-                "стоимость_пакета_без_скидки": pickup_without_pack + 130000,
-                "итого_со_скидкой": int((pickup_without_pack + 130000) * 0.75),
-                "выгода_по_скидке": int((pickup_without_pack + 130000) * 0.25)
+                "стоимость_пакета_без_скидки": pickup_without_pack + 140000,
+                "итого_со_скидкой": int((pickup_without_pack + 140000) * 0.75),
+                "выгода_по_скидке": int((pickup_without_pack + 140000) * 0.25)
             },
             "Премиум": {
-                "стоимость_пакета_без_скидки": pickup_without_pack + 200000,
-                "итого_со_скидкой": int((pickup_without_pack + 200000) * 0.75),
-                "выгода_по_скидке": int((pickup_without_pack + 200000) * 0.25)
+                "стоимость_пакета_без_скидки": pickup_without_pack + 210000,
+                "итого_со_скидкой": int((pickup_without_pack + 210000) * 0.75),
+                "выгода_по_скидке": int((pickup_without_pack + 210000) * 0.25)
             }
         }
 
