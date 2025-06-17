@@ -42,6 +42,7 @@ def calculate_price(args: dict) -> dict:
     rigid_element_type = args.get("rigid_element_type", "Труба круглая")  # Труба круглая / Штанга круглая / Штанга квадратная
     curtain_type = args.get("curtain_type", "Распашное")  # Распашное / Стационар / Гормошка
     city = args.get("city", "Алматы")
+    delivery_zone = args.get("delivery_zone", "По г. Алматы")
 
     # === DEBUG: вывод всех входных параметров ===
     debug("[DEBUG] Входные параметры:")
@@ -862,6 +863,9 @@ def calculate_price(args: dict) -> dict:
 
     # Добавляем доплату за зону доставки
 
+    # Добавляем доплату за зону доставки
+    delivery_city += calculate_delivery_extra(delivery_zone)
+
         
 
     # === ПАКЕТЫ С УЧЁТОМ СКИДКИ НА ОБЩУЮ СУММУ ===
@@ -918,6 +922,8 @@ def calculate_price(args: dict) -> dict:
 
     # пакеты со скидками
     packages = calculate_packages_v2(pickup_without_pack, hardware_color, shower_type)
+
+    
 
     # === ПРОВЕРКА НА ОБЯЗАТЕЛЬНЫЕ ПАРАМЕТРЫ ===
     missing_inputs = []
