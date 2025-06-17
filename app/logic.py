@@ -861,7 +861,6 @@ def calculate_price(args: dict) -> dict:
         delivery_city = pickup_with_pack
 
     # Добавляем доплату за зону доставки
-    delivery_city += calculate_delivery_extra(request.get("delivery_zone", ""))
 
         
 
