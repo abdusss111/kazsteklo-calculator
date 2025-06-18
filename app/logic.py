@@ -900,19 +900,19 @@ def calculate_price(args: dict) -> dict:
         if shower_type in ["Стационар", "Шторка"]:
             return {
                 "Эконом": {
-                    "стоимость_пакета_без_скидки": pickup_econom + 60000,
-                    "итого_с_монтажом_и_скидкой": int((pickup_econom + 60000) * 0.85),
-                    "выгода_по_скидке": int((pickup_econom + 60000) * 0.15)
+                    "стоимость_пакета_без_скидки": pickup_econom + 70000,
+                    "итого_с_монтажом_и_скидкой": int((pickup_econom + 70000) * 0.85),
+                    "выгода_по_скидке": int((pickup_econom + 70000) * 0.15)
                 },
                 "Стандарт": {
-                    "стоимость_пакета_без_скидки": pickup_without_pack + 110000,
-                    "итого_со_скидкой": int((pickup_without_pack + 110000) * 0.75),
-                    "выгода_по_скидке": int((pickup_without_pack + 110000) * 0.25)
+                    "стоимость_пакета_без_скидки": pickup_without_pack + 120000,
+                    "итого_со_скидкой": int((pickup_without_pack + 120000) * 0.75),
+                    "выгода_по_скидке": int((pickup_without_pack + 120000) * 0.25)
                 },
                 "Премиум": {
-                    "стоимость_пакета_без_скидки": pickup_without_pack + 160000,
-                    "итого_со_скидкой": int((pickup_without_pack + 160000) * 0.75),
-                    "выгода_по_скидке": int((pickup_without_pack + 160000) * 0.25)
+                    "стоимость_пакета_без_скидки": pickup_without_pack + 170000,
+                    "итого_со_скидкой": int((pickup_without_pack + 170000) * 0.75),
+                    "выгода_по_скидке": int((pickup_without_pack + 170000) * 0.25)
                 }
             }
         else:
