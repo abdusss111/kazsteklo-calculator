@@ -77,8 +77,10 @@ def calculate_price(args: dict) -> dict:
 
     if customer_type == "юрлицо":
         glass_price_m2 = glass_prices_legal.get(glass_type, 0)
+        debug(f"[DEBUG] Используется цена для юрлица: {glass_price_m2} за м²")
     else:
         glass_price_m2 = glass_prices_physical.get(glass_type, 0)
+        debug(f"[DEBUG] Используется цена для физлица: {glass_price_m2} за м²")
     glass_total = glass_price_m2 * length * height
 
     glass_price_m2_economy = glass_prices_economy.get(glass_type, glass_price_m2)
