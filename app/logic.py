@@ -661,42 +661,6 @@ def calculate_price(args: dict) -> dict:
                 debug(f"[ШТАНГА] Артикул доп. креплений: {sku_map.get('AAAAAAAA19', '-')}")
 
     elif shower_type == "Дверь":
-    seal_type_effective = (
-        "Уплотнитель магнитный 90/180"
-        if seal_type != "Полусфера"
-        else seal_type
-    )
-
-    sku_map = {
-        "AAAAAAAAA5": f"P10086{suffix}" if hardware_color in ["Хром", "Черная", "Бронза", "Золото"] else "-",
-        "AAAAAAAAA6": (
-            f"U10084{suffix}" if seal_type == "Полусфера" else
-            f"HSK-2{suffix}" if seal_type == "Притворная планка" else "-"
-        ),
-        "AAAAAAAAA7": f"U10072{suffix}",
-        "AAAAAAAAA8": (
-            f"U10025{suffix}" if seal_type_effective == "Уплотнитель магнитный 90/180" else "-"
-        ),
-        "AAAAAAAAA9": (
-            f"J10255-19{suffix}" if handle_type == "Ручка полотенцесушитель" else
-            f"J10275{suffix}" if handle_type == "Скоба" else
-            f"J10333{suffix}" if handle_type == "Кноб" else "-"
-        ),
-        "AAAAAAAAA10": (
-            f"HSK-1{suffix}" if bottom_element == "Порожек" else
-            f"Покуп-{suffix}" if bottom_element == "Крышка на П-профиль" else "-"
-        ),
-    }
-
-    sku_qty = {
-        "AAAAAAAAA5": 2,
-        "AAAAAAAAA6": 1,
-        "AAAAAAAAA7": 2,
-        "AAAAAAAAA8": 1 if seal_type_effective == "Уплотнитель магнитный 90/180" else 0,
-        "AAAAAAAAA9": 1,
-        "AAAAAAAAA10": 1,
-    }
-    elif shower_type == "Дверь":
         seal_type_effective = (
             "Уплотнитель магнитный 90/180"
             if seal_type != "Полусфера"
