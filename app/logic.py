@@ -661,6 +661,42 @@ def calculate_price(args: dict) -> dict:
                 debug(f"[ШТАНГА] Артикул доп. креплений: {sku_map.get('AAAAAAAA19', '-')}")
 
     elif shower_type == "Дверь":
+    seal_type_effective = (
+        "Уплотнитель магнитный 90/180"
+        if seal_type != "Полусфера"
+        else seal_type
+    )
+
+    sku_map = {
+        "AAAAAAAAA5": f"P10086{suffix}" if hardware_color in ["Хром", "Черная", "Бронза", "Золото"] else "-",
+        "AAAAAAAAA6": (
+            f"U10084{suffix}" if seal_type == "Полусфера" else
+            f"HSK-2{suffix}" if seal_type == "Притворная планка" else "-"
+        ),
+        "AAAAAAAAA7": f"U10072{suffix}",
+        "AAAAAAAAA8": (
+            f"U10025{suffix}" if seal_type_effective == "Уплотнитель магнитный 90/180" else "-"
+        ),
+        "AAAAAAAAA9": (
+            f"J10255-19{suffix}" if handle_type == "Ручка полотенцесушитель" else
+            f"J10275{suffix}" if handle_type == "Скоба" else
+            f"J10333{suffix}" if handle_type == "Кноб" else "-"
+        ),
+        "AAAAAAAAA10": (
+            f"HSK-1{suffix}" if bottom_element == "Порожек" else
+            f"Покуп-{suffix}" if bottom_element == "Крышка на П-профиль" else "-"
+        ),
+    }
+
+    sku_qty = {
+        "AAAAAAAAA5": 2,
+        "AAAAAAAAA6": 1,
+        "AAAAAAAAA7": 2,
+        "AAAAAAAAA8": 1 if seal_type_effective == "Уплотнитель магнитный 90/180" else 0,
+        "AAAAAAAAA9": 1,
+        "AAAAAAAAA10": 1,
+    }
+    elif shower_type == "Дверь":
         seal_type_effective = (
             "Уплотнитель магнитный 90/180"
             if seal_type != "Полусфера"
@@ -668,67 +704,23 @@ def calculate_price(args: dict) -> dict:
         )
 
         sku_map = {
-            "AAAAAAAAA5": (
-                f"P10086{suffix}"
-                if hardware_color in ["Хром", "Черная", "Бронза", "Золото"]
-                else "-"
-            ),
+            "AAAAAAAAA5": f"P10086{suffix}" if hardware_color in ["Хром", "Черная", "Бронза", "Золото"] else "-",
             "AAAAAAAAA6": (
-                f"U10084{suffix}"   if seal_type == "Полусфера" and hardware_color == "Хром" else
-                f"U10084b{suffix}"  if seal_type == "Полусфера" and hardware_color == "Черная" else
-                f"U10084br{suffix}" if seal_type == "Полусфера" and hardware_color == "Бронза" else
-                f"U10084g{suffix}"  if seal_type == "Полусфера" and hardware_color == "Золото" else
-                f"HSK-2{suffix}"    if seal_type == "Притворная планка" and hardware_color == "Хром" else
-                f"HSK-2b{suffix}"   if seal_type == "Притворная планка" and hardware_color == "Черная" else
-                f"HSK-2g{suffix}"   if seal_type == "Притворная планка" and hardware_color == "Золото" else "-"
+                f"U10084{suffix}" if seal_type == "Полусфера" else
+                f"HSK-2{suffix}" if seal_type == "Притворная планка" else "-"
             ),
-            "AAAAAAAAA7": (
-                f"U10072{suffix}"   if hardware_color == "Хром" else
-                f"U10072b{suffix}"  if hardware_color == "Черная" else
-                f"U10072br{suffix}" if hardware_color == "Бронза" else
-                f"U10072g{suffix}"  if hardware_color == "Золото" else "-"
-            ),
+            "AAAAAAAAA7": f"U10072{suffix}",
             "AAAAAAAAA8": (
-                f"U10025{suffix}"   if seal_type_effective == "Уплотнитель магнитный 90/180" and hardware_color == "Хром" else
-                f"U10025b{suffix}"  if seal_type_effective == "Уплотнитель магнитный 90/180" and hardware_color == "Черная" else
-                f"U10025br{suffix}" if seal_type_effective == "Уплотнитель магнитный 90/180" and hardware_color == "Бронза" else
-                f"U10025g{suffix}"  if seal_type_effective == "Уплотнитель магнитный 90/180" and hardware_color == "Золото" else "-"
+                f"U10025{suffix}" if seal_type_effective == "Уплотнитель магнитный 90/180" else "-"
             ),
             "AAAAAAAAA9": (
-                f"J10255-19{suffix}"  if handle_type == "Ручка полотенцесушитель" and hardware_color == "Хром" else
-                f"J10255-19b{suffix}" if handle_type == "Ручка полотенцесушитель" and hardware_color == "Черная" else
-                f"J10255-19br{suffix}"if handle_type == "Ручка полотенцесушитель" and hardware_color == "Бронза" else
-                f"J10255-19g{suffix}" if handle_type == "Ручка полотенцесушитель" and hardware_color == "Золото" else
-                f"J10275{suffix}"     if handle_type == "Скоба" and hardware_color == "Хром" else
-                f"J10275b{suffix}"    if handle_type == "Скоба" and hardware_color == "Черная" else
-                f"J10275br{suffix}"   if handle_type == "Скоба" and hardware_color == "Бронза" else
-                f"J10275g{suffix}"    if handle_type == "Скоба" and hardware_color == "Золото" else
-                f"J10333{suffix}"     if handle_type == "Кноб" and hardware_color == "Хром" else
-                f"J10333b{suffix}"    if handle_type == "Кноб" and hardware_color == "Черная" else
-                f"J10333br{suffix}"   if handle_type == "Кноб" and hardware_color == "Бронза" else
-                f"J10333g{suffix}"    if handle_type == "Кноб" and hardware_color == "Золото" else
-                f"J10265{suffix}"     if handle_type == "Ручка полотенцесушитель" and hardware_color == "Хром" else
-                f"J10265b{suffix}"    if handle_type == "Ручка полотенцесушитель" and hardware_color == "Черная" else
-                f"J10265br{suffix}"   if handle_type == "Ручка полотенцесушитель" and hardware_color == "Бронза" else
-                f"J10265g{suffix}"    if handle_type == "Ручка полотенцесушитель" and hardware_color == "Золото" else
-                f"J10270{suffix}"     if handle_type == "Скоба" and hardware_color == "Хром" else
-                f"J10270b{suffix}"    if handle_type == "Скоба" and hardware_color == "Черная" else
-                f"J10270br{suffix}"   if handle_type == "Скоба" and hardware_color == "Бронза" else
-                f"J10270g{suffix}"    if handle_type == "Скоба" and hardware_color == "Золото" else
-                f"J10347{suffix}"     if handle_type == "Кноб" and hardware_color == "Хром" else
-                f"J10347b{suffix}"    if handle_type == "Кноб" and hardware_color == "Черная" else
-                f"J10347br{suffix}"   if handle_type == "Кноб" and hardware_color == "Бронза" else
-                f"J10347g{suffix}"    if handle_type == "Кноб" and hardware_color == "Золото" else "-"
+                f"J10255-19{suffix}" if handle_type == "Ручка полотенцесушитель" else
+                f"J10275{suffix}" if handle_type == "Скоба" else
+                f"J10333{suffix}" if handle_type == "Кноб" else "-"
             ),
             "AAAAAAAAA10": (
-                f"HSK-1{suffix}"     if bottom_element == "Порожек" and hardware_color == "Хром" else
-                f"HSK-1b{suffix}"    if bottom_element == "Порожек" and hardware_color == "Черная" else
-                f"HSK-1br{suffix}"   if bottom_element == "Порожек" and hardware_color == "Бронза" else
-                f"HSK-1g{suffix}"    if bottom_element == "Порожек" and hardware_color == "Золото" else
-                f"Покуп{suffix}"     if bottom_element == "Крышка на П-профиль" and hardware_color == "Хром" else
-                f"Покуп-b{suffix}"   if bottom_element == "Крышка на П-профиль" and hardware_color == "Черная" else
-                f"Покуп-br{suffix}"  if bottom_element == "Крышка на П-профиль" and hardware_color == "Бронза" else
-                f"Покуп-g{suffix}"   if bottom_element == "Крышка на П-профиль" and hardware_color == "Золото" else "-"
+                f"HSK-1{suffix}" if bottom_element == "Порожек" else
+                f"Покуп-{suffix}" if bottom_element == "Крышка на П-профиль" else "-"
             ),
         }
 
